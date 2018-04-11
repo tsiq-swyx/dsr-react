@@ -1,13 +1,11 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 
-// import '../css/design-system.css'; // make it pretty!
-
 export default function Template({
   data, // this prop will be injected by the GraphQL query we'll write in a bit
 }) {
-  console.log('***** datadatadata', data)
   const { markdownRemark: post } = data // data.markdownRemark holds our post data
+  console.log('data', data)
   return (
     <div className="design-system-container">
       <Helmet title={`Design System: ${post.frontmatter.title}`} />
@@ -23,12 +21,11 @@ export default function Template({
   )
 }
 
-// date(formatString: "MMMM DD, YYYY")
-// path
-
+// I suspect this $path variable here is getting the wrong value,
+// hence the pageQuery is returning null. I have no way to debug this and this is probably a bad thing.
 export const pageQuery = graphql`
-  query DesignSystemsByPath($path: String!) {
-    markdownRemark(frontmatter: { title: { ne: $path } }) {
+  query DesignSystemsByPath($slug: String!) {
+    markdownRemark(fields: { slug: { eq: $slug } }) {
       html
       frontmatter {
         title
@@ -41,3 +38,6 @@ export const pageQuery = graphql`
     }
   }
 `
+
+// date(formatString: "MMMM DD, YYYY")
+// path

@@ -83,12 +83,12 @@ const Header = ({ siteTitle }) => (
                 viewBox="0 0 24 24"
               >
                 {' '}
-                <g fill="none" fill-rule="evenodd">
+                <g fill="none" fillRule="evenodd">
                   {' '}
                   <circle cx="12" cy="12" r="12" fill="#73FFE1" />{' '}
                   <polygon
                     fill="#000"
-                    fill-rule="nonzero"
+                    fillRule="nonzero"
                     points="13 6 11 6 11 11 6 11 6 13 11 13 11 18 13 18 13 13 18 13 18 11 13 11"
                   />{' '}
                 </g>{' '}

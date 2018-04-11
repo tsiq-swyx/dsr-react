@@ -7,6 +7,19 @@
 // You can delete this file if you're not using it
 
 const path = require('path')
+const { createFilePath } = require(`gatsby-source-filesystem`)
+
+exports.onCreateNode = ({ node, getNode, boundActionCreators }) => {
+  const { createNodeField } = boundActionCreators
+  if (node.internal.type === `MarkdownRemark`) {
+    const slug = createFilePath({ node, getNode, basePath: `data` })
+    createNodeField({
+      node,
+      name: `slug`,
+      value: slug,
+    })
+  }
+}
 
 exports.createPages = ({ boundActionCreators, graphql }) => {
   const { createPage } = boundActionCreators
@@ -20,8 +33,8 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
       ) {
         edges {
           node {
-            frontmatter {
-              title
+            fields {
+              slug
             }
           }
         }
@@ -33,12 +46,15 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
     }
 
     result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-      console.log('node.frontmatter.title', node.frontmatter.title)
       createPage({
-        path: slugify(node.frontmatter.title),
+        // path: slugify(node.frontmatter.title),
         // path: node.frontmatter.title,
+        path: node.fields.slug,
         component: DSTemplate,
-        context: {}, // additional data can be passed via context
+        context: {
+          // title: slugify(node.frontmatter.title),
+          slug: node.fields.slug,
+        }, // additional data can be passed via context
       })
     })
   })
